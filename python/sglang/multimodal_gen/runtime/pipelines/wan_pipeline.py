@@ -8,9 +8,11 @@ This module contains an implementation of the Wan video diffusion pipeline
 using the modular pipeline architecture.
 """
 
-from sglang.multimodal_gen.runtime.models.schedulers.scheduling_flow_unipc_multistep import (
-    FlowUniPCMultistepScheduler,
-)
+# from sglang.multimodal_gen.runtime.models.schedulers.scheduling_flow_unipc_multistep import (
+#     FlowUniPCMultistepScheduler,
+# )
+from sglang.multimodal_gen.runtime.models.schedulers.scheduling_rcm import RcmFlowMatchScheduler
+
 from sglang.multimodal_gen.runtime.pipelines_core.composed_pipeline_base import (
     ComposedPipelineBase,
 )
@@ -47,9 +49,11 @@ class WanPipeline(LoRAPipeline, ComposedPipelineBase):
 
     def initialize_pipeline(self, server_args: ServerArgs):
         # We use UniPCMScheduler from Wan2.1 official repo, not the one in diffusers.
-        self.modules["scheduler"] = FlowUniPCMultistepScheduler(
-            shift=server_args.pipeline_config.flow_shift
-        )
+        # self.modules["scheduler"] = FlowUniPCMultistepScheduler(
+        #     shift=server_args.pipeline_config.flow_shift
+        # )
+
+        self.modules["scheduler"] = RcmFlowMatchScheduler(sigma_max=80.0)    # t2v
 
     def create_pipeline_stages(self, server_args: ServerArgs) -> None:
         """Set up pipeline stages with proper dependency injection."""

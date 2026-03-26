@@ -20,7 +20,7 @@ from sglang.multimodal_gen.runtime.utils.logging_utils import init_logger
 
 logger = init_logger(__name__)
 
-
+import torch
 class LatentPreparationStage(PipelineStage):
     """
     Stage for preparing initial latent variables for the diffusion process.
@@ -83,7 +83,9 @@ class LatentPreparationStage(PipelineStage):
                 batch, batch_size, num_frames
             )
             latents = randn_tensor(
-                shape, generator=generator, device=device, dtype=dtype
+                # shape, generator=generator, device=device, dtype=dtype,
+                # shape, generator=generator, device=device, dtype=torch.float32, # t2v
+                shape, generator=generator, device=device, dtype=torch.float64, # i2v
             )
 
             latent_ids = server_args.pipeline_config.maybe_prepare_latent_ids(latents)

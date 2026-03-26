@@ -1011,7 +1011,7 @@ class DenoisingStage(PipelineStage):
                             reserved_frames_mask,
                         )
 
-                        latent_model_input = self.scheduler.scale_model_input(
+                        latent_model_input = self.scheduler.scale_model_input(  # 啥也没改
                             latent_model_input, t_device
                         )
 
@@ -1041,7 +1041,8 @@ class DenoisingStage(PipelineStage):
                         # Compute the previous noisy sample
                         latents = self.scheduler.step(
                             model_output=noise_pred,
-                            timestep=t_device,
+                            # timestep=t_device,
+                            timestep_idx = i,
                             sample=latents,
                             **extra_step_kwargs,
                             return_dict=False,

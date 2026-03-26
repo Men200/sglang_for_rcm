@@ -242,11 +242,13 @@ def _get_config_info(model_path: str) -> Optional[ConfigInfo]:
 
     # 2. Partial match: find the best (longest) match against all registered model hf paths.
     model_name = get_model_short_name(model_path.lower())
-    all_model_hf_paths = sorted(_MODEL_HF_PATH_TO_NAME.keys(), key=len, reverse=True)
+    # all_model_hf_paths = sorted(_MODEL_HF_PATH_TO_NAME.keys(), key=len, reverse=True)
+    all_model_hf_paths = sorted(_MODEL_HF_PATH_TO_NAME.keys(), key=len, reverse=False)  # 优先匹配注册了的模型中最短的
     for registered_model_hf_id in all_model_hf_paths:
         registered_model_name = get_model_short_name(registered_model_hf_id.lower())
 
-        if registered_model_name == model_name:
+        # if registered_model_name == model_name:
+        if model_name in registered_model_name:
             logger.debug(
                 f"Resolved model name '{registered_model_hf_id}' from partial path match."
             )

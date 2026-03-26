@@ -98,7 +98,6 @@ class Req:
     raw_audio_latent_shape: tuple[int, ...] | None = None
 
     # Audio Parameters
-    fps: float = 24.0
     generate_audio: bool = True
 
     raw_latent_shape: torch.Tensor | None = None
